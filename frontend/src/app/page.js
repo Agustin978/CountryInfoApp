@@ -17,8 +17,8 @@ export default async function Home() {
       <main className={styles.main}>
         <ul>
           {countries.map((country) => (
-            <li key={country.code}>
-              <Link href={`/countries/${country.code}`}>{country.name}</Link>
+            <li key={country.countryCode}>
+              <Link href={`/countries/${country.countryCode}`}>{country.name}</Link>
             </li>
           ))}
         </ul>
