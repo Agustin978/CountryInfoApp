@@ -23,4 +23,42 @@ router.get('/:countryCode', async(req, res) => {
     }
 })
 
+router.get('/flag/:countryName', async(req, res) => {
+    const { countryName } = req.params;
+    try{
+        const response = await axios.get(`${process.env.POPULATION_FLAG_API}/flag/images`);
+        const country = response.data.data.find(
+            (item) => item.name === countryName 
+        );
+
+        if(!country)
+        {
+            return res.status(404).json({error: `No se encontro el pais solicitado: ${countryName}`});
+        }
+        res.json({name: country.name, flag: country.flag});
+    }catch(error){
+        console.error('Error al obtener la bandera:', error.message);
+        res.status(500).json({ error: 'Error al obtener la información del país' });
+    }
+})
+
+router.get('/population/:countryName', async(req, res) => {
+    const { countryName } = req.params;
+    try{
+        const response = await axios.get(`${process.env.POPULATION_FLAG_API}/population`);
+        const country = response.data.data.find(
+            (item) => item.code === countryName 
+        );
+
+        if(!country)
+        {
+            return res.status(404).json({error: `No se encontro el pais solicitado: ${countryName}`});
+        }
+        res.json({name: country.name, population: country.populationCounts});
+    }catch(error){
+        console.error('Error al obtener la poblacion:', error.message);
+        res.status(500).json({ error: 'Error al obtener la información del país' });
+    }
+})
+
 module.exports = router;
